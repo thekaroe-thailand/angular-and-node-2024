@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-sidebar',
@@ -12,5 +13,22 @@ export class SidebarComponent {
 
   ngOnInit() {
     this.name = localStorage.getItem('angular_name')!;
+  }
+
+  async signout() {
+    const button = await Swal.fire({
+      title: 'ออกจากระบบ',
+      text: 'คุณต้องการออกจากระบบ ใช่หรือไม่',
+      icon: 'question',
+      showCancelButton: true,
+      showConfirmButton: true,
+    });
+
+    if (button.isConfirmed) {
+      localStorage.removeItem('angular_token');
+      localStorage.removeItem('angular_name');
+
+      location.reload();
+    }
   }
 }

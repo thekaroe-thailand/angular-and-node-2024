@@ -9,14 +9,23 @@
     <!-- Sidebar -->
     <div class="sidebar">
         <!-- Sidebar user panel (optional) -->
+        @if (name != undefined)
+        {
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
                 <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
                 <a href="#" class="d-block">{{ name }}</a>
+
+                <div class="mt-3">
+                    <button class="btn btn-danger" (click)="signout()">
+                        <i class="fa fa-times mr-2"></i>Sign Out
+                    </button>
+                </div>
             </div>
         </div>
+        }
 
         <!-- SidebarSearch Form -->
         <div class="form-inline">
@@ -65,11 +74,10 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a href="pages/widgets.html" class="nav-link">
+                    <a href="/foodType" class="nav-link">
                         <i class="nav-icon fas fa-th"></i>
                         <p>
-                            Widgets
-                            <span class="right badge badge-danger">New</span>
+                            ประเภทอาหาร
                         </p>
                     </a>
                 </li>

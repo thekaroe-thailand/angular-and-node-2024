@@ -1,0 +1,53 @@
+<div class="card mt-3">
+    <div class="card-header bg-secondary">ประเภทอาหาร</div>
+    <div class="card-body">
+
+        <button (click)="clearForm()" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalFoodType">
+            <i class="fa fa-plus me-2"></i>เพิ่มรายการ
+        </button>
+
+        <table class="mt-3 table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>ชื่อประเภท</th>
+                    <th>หมายเหตุ</th>
+                    <th width="120px"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (item of foodTypes; track item)
+                {
+                <tr>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.remark }}</td>
+                    <td class="text-center">
+                        <button class="btn btn-primary mr-2" data-bs-toggle="modal" data-bs-target="#modalFoodType"
+                            (click)="edit(item)">
+                            <i class="fa fa-pencil"></i>
+                        </button>
+                        <button class="btn btn-danger" (click)="remove(item)">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<app-my-modal modalId="modalFoodType" title="ประเภทอาหาร">
+    <div>
+        <div>ชื่อประเภท</div>
+        <input class="form-control" [(ngModel)]="name" />
+    </div>
+    <div class="mt-3">
+        <div>หมายเหตุ</div>
+        <input class="form-control" [(ngModel)]="remark" />
+    </div>
+    <div class="mt-3">
+        <button (click)="save()" class="btn btn-primary">
+            <i class="fa fa-check mr-2"></i>บันทึก
+        </button>
+    </div>
+</app-my-modal>
