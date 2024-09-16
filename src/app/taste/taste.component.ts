@@ -44,7 +44,21 @@ export class TasteComponent {
     }
   }
 
-  fetchData() {}
+  fetchData() {
+    try {
+      this.http
+        .get(config.apiServer + '/api/taste/list')
+        .subscribe((res: any) => {
+          this.tastes = res.results;
+        });
+    } catch (e: any) {
+      Swal.fire({
+        title: 'error',
+        text: e.message,
+        icon: 'error',
+      });
+    }
+  }
 
   save() {
     try {
@@ -80,7 +94,36 @@ export class TasteComponent {
     }
   }
 
-  edit(item: any) {}
+  edit(item: any) {
+    this.foodTypeId = item.foodTypeId;
+    this.name = item.name;
+    this.id = item.id;
+    this.remark = item.remark;
+  }
 
-  remove(item: any) {}
+  async remove(item: any) {
+    try {
+      const button = await Swal.fire({
+        title: 'ลบข้อมูล',
+        text: 'คุณต้องการลบข้อมูลใช่หรือไม่',
+        icon: 'question',
+        showCancelButton: true,
+        showConfirmButton: true,
+      });
+
+      if (button.isConfirmed) {
+        this.http
+          .delete(config.apiServer + '/api/taste/remove/' + item.id)
+          .subscribe((res: any) => {
+            this.fetchData();
+          });
+      }
+    } catch (e: any) {
+      Swal.fire({
+        title: 'error',
+        text: e.message,
+        icon: 'error',
+      });
+    }
+  }
 }

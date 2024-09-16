@@ -5,7 +5,34 @@
             <i class="fa fa-plus me-2"></i>เพิ่มรายการ
         </button>
 
-
+        <table class="mt-3 table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>ประเภทอาหาร</th>
+                    <th>รสชาติ</th>
+                    <th>หมายเหตุ</th>
+                    <th width="110px"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (item of tastes; track $index) {
+                <tr>
+                    <td>{{ item.FoodType.name }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.remark }}</td>
+                    <td class="text-center">
+                        <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#modalTaste"
+                            (click)="edit(item)">
+                            <i class="fa fa-pencil"></i>
+                        </button>
+                        <button class="btn btn-danger" (click)="remove(item)">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
     </div>
 </div>
 
