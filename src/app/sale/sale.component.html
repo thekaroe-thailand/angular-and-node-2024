@@ -1,0 +1,50 @@
+<div class="input-group mt-3">
+    <span class="input-group-text bg-dark text-white">โต้ะ</span>
+    <input class="form-control" style="width: 100px" [(ngModel)]="tableNo" />
+</div>
+
+<div class="card mt-3">
+    <div class="card-header">ขายอาหาร/เครื่องดื่ม</div>
+    <div class="card-body">
+        <button class="btn btn-primary me-2" (click)="filter('food')">
+            <i class="fa fa-home me-2"></i>อาหาร
+        </button>
+        <button class="btn btn-primary me-2" (click)="filter('drink')">
+            <i class="fa fa-calendar me-2"></i>เครื่องดื่ม
+        </button>
+        <button class="btn btn-primary me-2" (click)="fetchData()">
+            <i class="fa fa-check me-2"></i>ทั้งหมด
+        </button>
+
+        <div class="d-flex flex-row">
+            <div>
+                <div class="row mt-3">
+                    @for (item of foods; track $index)
+                    {
+                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        <div class="card">
+                            <img (click)="saveToSaleTemp(item)" class="card-image"
+                                src="{{ apiPath }}/uploads/{{ item.img }}" height="100px" />
+                            <div class="card-body">
+                                <div class="h5">{{ item.name }}</div>
+                                <div class="text-success h5 text-center">{{ item.price }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    }
+                </div>
+            </div>
+            <div>
+                <div>รายการที่เลือก</div>
+                <div class="card">
+                    <div class="card-body">
+                        <div>ไข่เจียวผัก</div>
+                        <div>150</div>
+                        <div><button class="btn btn-primary"><i class="fa fa-minus"></i></button></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

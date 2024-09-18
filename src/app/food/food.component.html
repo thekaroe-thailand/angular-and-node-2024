@@ -1,9 +1,60 @@
 <div class="card mt-3">
     <div class="card-header">อาหาร/เครื่องดื่ม</div>
     <div class="card-body">
-        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalFood" (click)="clearForm()">
+        <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#modalFood" (click)="clearForm()">
             <i class="fa fa-plus me-2"></i>เพิ่มรายการ
         </button>
+        <button class="btn btn-success me-2" (click)="filterFood()">
+            <i class="fa fa-home me-2"></i>อาหาร
+        </button>
+        <button class="btn btn-info me-2" (click)="filterDrink()">
+            <i class="fa fa-check me-2"></i>เครื่องดื่ม
+        </button>
+        <button class="btn btn-secondary" (click)="filterAll()">
+            <i class="fa fa-clock me-2"></i>ทั้งหมด
+        </button>
+
+        <table class="mt-3 table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th width="100px"></th>
+                    <th>ประเภทอาหาร</th>
+                    <th>หมวด</th>
+                    <th>รายการ</th>
+                    <th>หมายเหตุ</th>
+                    <th class="text-end">ราคา</th>
+                    <th width="110px"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (item of foods; track $index) {
+                <tr>
+                    @if (item.img != "")
+                    {
+                    <td><img src="{{ serverPath }}/uploads/{{item.img}}" width="100px" /></td>
+                    }
+                    @else
+                    {
+                    <td>-</td>
+                    }
+                    <td>{{ item.FoodType.name }}</td>
+                    <td>{{ item.foodType }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.remark }}</td>
+                    <td class="text-end">{{ item.price }}</td>
+                    <td class="text-center">
+                        <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#modalFood"
+                            (click)="edit(item)">
+                            <i class="fa fa-pencil"></i>
+                        </button>
+                        <button class="btn btn-danger" (click)="remove(item)">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
     </div>
 </div>
 
@@ -23,8 +74,14 @@
         <input class="form-control" [(ngModel)]="name" />
     </div>
     <div class="mt-3">
+        @if (img != "")
+        {
+        <div class="mb-2">
+            <img src="{{ serverPath }}/uploads/{{ img }}" width="150px" />
+        </div>
+        }
         <div>File ภาพ</div>
-        <input type="file" class="form-control" />
+        <input type="file" class="form-control" id="img" (change)="fileSelected($event.target)" />
     </div>
     <div class="mt-3">
         <div>ราคา</div>
