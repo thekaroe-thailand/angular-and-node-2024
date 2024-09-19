@@ -15,36 +15,60 @@
         <button class="btn btn-primary me-2" (click)="fetchData()">
             <i class="fa fa-check me-2"></i>ทั้งหมด
         </button>
+        <button class="btn btn-danger me-2" (click)="clearAllRow()">
+            <i class="fa fa-times me-2"></i>ล้างรายการ
+        </button>
 
-        <div class="d-flex flex-row">
-            <div>
-                <div class="row mt-3">
-                    @for (item of foods; track $index)
-                    {
-                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                        <div class="card">
-                            <img (click)="saveToSaleTemp(item)" class="card-image"
-                                src="{{ apiPath }}/uploads/{{ item.img }}" height="100px" />
-                            <div class="card-body">
-                                <div class="h5">{{ item.name }}</div>
-                                <div class="text-success h5 text-center">{{ item.price }}</div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-9">
+                    <div class="row mt-3">
+                        @for (item of foods; track $index)
+                        {
+                        <div class="col-xxl-2 col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                            <div class="card">
+                                <img (click)="saveToSaleTemp(item)" class="card-image"
+                                    src="{{ apiPath }}/uploads/{{ item.img }}" height="100px" />
+                                <div class="card-body">
+                                    <div class="h5">{{ item.name }}</div>
+                                    <div class="text-success h5 text-center">{{ item.price }}</div>
+                                </div>
                             </div>
+                        </div>
+                        }
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="alert bg-dark text-white text-end h3">{{ amount.toLocaleString('th-TH') }}</div>
+                    @for (item of saleTemps; track $index)
+                    {
+                    <div class="card">
+                        <div class="card-body">
+                            <div>{{ item.Food.name }}</div>
+                            <div>{{ item.price }} x {{ item.qty }} = {{ item.price * item.qty }}</div>
+                            <div class="mt-2">
+                                <div class="input-group">
+                                    <button class="btn btn-primary">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+
+                                    <input class="form-control text-center disabled" disabled [value]="item.qty" />
+
+                                    <button class="btn btn-primary">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-danger btn-block" (click)="removeItem(item)">
+                                <i class="fa fa-times me-2"></i>ลบออก
+                            </button>
                         </div>
                     </div>
                     }
                 </div>
             </div>
-            <div>
-                <div>รายการที่เลือก</div>
-                <div class="card">
-                    <div class="card-body">
-                        <div>ไข่เจียวผัก</div>
-                        <div>150</div>
-                        <div><button class="btn btn-primary"><i class="fa fa-minus"></i></button></div>
-                    </div>
-                </div>
-            </div>
         </div>
-
     </div>
 </div>
