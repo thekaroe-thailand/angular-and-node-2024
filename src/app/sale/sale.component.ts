@@ -3,23 +3,41 @@ import { Component } from '@angular/core';
 import Swal from 'sweetalert2';
 import config from '../../config';
 import { FormsModule } from '@angular/forms';
+import { MyModalComponent } from '../my-modal/my-modal.component';
 
 @Component({
   selector: 'app-sale',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, MyModalComponent],
   templateUrl: './sale.component.html',
   styleUrl: './sale.component.css',
 })
 export class SaleComponent {
   constructor(private http: HttpClient) {}
 
-  foods: any[] = [];
-  saleTemps: any[] = [];
+  foods: any = [];
+  saleTemps: any = [];
+  foodSizes: any = [];
   apiPath: string = '';
   tableNo: number = 1;
   userId: number = 0;
   amount: number = 0;
+
+  chooseFoodSize(foodTypeId: number) {
+    try {
+      this.http
+        .get(config.apiServer + '/api/foodSize/filter/' + foodTypeId)
+        .subscribe((res: any) => {
+          this.foodSizes = res.results;
+        });
+    } catch (e: any) {
+      Swal.fire({
+        title: 'error',
+        text: e.message,
+        icon: 'error',
+      });
+    }
+  }
 
   async removeItem(item: any) {
     try {
@@ -33,7 +51,13 @@ export class SaleComponent {
 
       if (button.isConfirmed) {
         this.http
-          .delete(config.apiServer + '/api/saleTemp/remove/' + item.foodId)
+          .delete(
+            config.apiServer +
+              '/api/saleTemp/remove/' +
+              item.foodId +
+              '/' +
+              this.userId
+          )
           .subscribe((res: any) => {
             this.fetchDataSaleTemp();
           });
@@ -62,6 +86,26 @@ export class SaleComponent {
         .subscribe((res: any) => {
           this.fetchDataSaleTemp();
         });
+    }
+  }
+
+  changeQty(id: number, style: string) {
+    try {
+      const payload = {
+        id: id,
+        style: style,
+      };
+      this.http
+        .put(config.apiServer + '/api/saleTemp/changeQty', payload)
+        .subscribe((res: any) => {
+          this.fetchDataSaleTemp();
+        });
+    } catch (e: any) {
+      Swal.fire({
+        title: 'error',
+        text: e.message,
+        icon: 'error',
+      });
     }
   }
 

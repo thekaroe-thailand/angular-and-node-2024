@@ -48,22 +48,38 @@
                             <div>{{ item.price }} x {{ item.qty }} = {{ item.price * item.qty }}</div>
                             <div class="mt-2">
                                 <div class="input-group">
-                                    <button class="btn btn-primary">
+                                    <button class="btn btn-primary" (click)="changeQty(item.id, 'down')">
                                         <i class="fa fa-minus"></i>
                                     </button>
 
                                     <input class="form-control text-center disabled" disabled [value]="item.qty" />
 
-                                    <button class="btn btn-primary">
+                                    <button class="btn btn-primary" (click)="changeQty(item.id, 'up')">
                                         <i class="fa fa-plus"></i>
                                     </button>
                                 </div>
                             </div>
                         </div>
                         <div class="card-footer">
-                            <button class="btn btn-danger btn-block" (click)="removeItem(item)">
-                                <i class="fa fa-times me-2"></i>ลบออก
-                            </button>
+                            <div class="row">
+                                <div class="col-4">
+                                    <button class="btn btn-danger btn-block" (click)="removeItem(item)">
+                                        <i class="fa fa-times"></i>
+                                    </button>
+                                </div>
+                                <div class="col-4">
+                                    <button class="btn btn-success btn-block"
+                                        (click)="chooseFoodSize(item.Food.foodTypeId)" data-bs-toggle="modal"
+                                        data-bs-target="#modalFoodSize">
+                                        <i class="fa fa-list"></i>
+                                    </button>
+                                </div>
+                                <div class="col-4">
+                                    <button class="btn btn-info btn-block">
+                                        <i class="fa fa-file-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     }
@@ -72,3 +88,17 @@
         </div>
     </div>
 </div>
+
+<app-my-modal modalId="modalFoodSize" title="เลือกขนาด">
+    <div class="text-center">
+        @for (item of foodSizes; track $index) {
+        <button class="btn btn-primary btn-lg me-2">
+            {{ item.name }}
+            @if (item.moneyAdded > 0)
+            {
+            + {{ item.moneyAdded }} บาท
+            }
+        </button>
+        }
+    </div>
+</app-my-modal>
