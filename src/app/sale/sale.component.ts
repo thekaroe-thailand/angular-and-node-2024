@@ -22,13 +22,34 @@ export class SaleComponent {
   tableNo: number = 1;
   userId: number = 0;
   amount: number = 0;
+  saleTempId: number = 0;
+  foodName: string = '';
+  saleTempDetail: any = [];
 
-  chooseFoodSize(foodTypeId: number) {
+  selectedFoodSize(saleTempId: number, foodSizeId: number) {}
+
+  chooseFoodSize(item: any) {
+    let foodTypeId: number = item.Food.foodTypeId;
+    this.saleTempId = item.id;
+    this.foodName = item.Food.name;
+
     try {
       this.http
         .get(config.apiServer + '/api/foodSize/filter/' + foodTypeId)
         .subscribe((res: any) => {
           this.foodSizes = res.results;
+        });
+
+      const payload = {
+        foodId: item.foodId,
+        qty: item.qty,
+        saleTempId: item.id,
+      };
+
+      this.http
+        .post(config.apiServer + '/api/saleTemp/createDetail', payload)
+        .subscribe((res: any) => {
+          this.fetchDataSaleTempDetail();
         });
     } catch (e: any) {
       Swal.fire({
@@ -37,6 +58,16 @@ export class SaleComponent {
         icon: 'error',
       });
     }
+  }
+
+  fetchDataSaleTempDetail() {
+    this.http
+      .get(
+        config.apiServer + '/api/saleTemp/listSaleTempDetail/' + this.saleTempId
+      )
+      .subscribe((res: any) => {
+        this.saleTempDetail = res.results;
+      });
   }
 
   async removeItem(item: any) {
