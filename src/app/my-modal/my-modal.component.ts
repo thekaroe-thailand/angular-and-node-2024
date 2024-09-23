@@ -1,4 +1,4 @@
-import { Component, Input, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-my-modal',
@@ -10,4 +10,5 @@ import { Component, Input, Output } from '@angular/core';
 export class MyModalComponent {
   @Input() modalId: string = '';
   @Input() title: string = '';
+  @Input() modalSize: string = '';
 }
