@@ -26,7 +26,27 @@ export class SaleComponent {
   foodName: string = '';
   saleTempDetail: any = [];
 
-  selectedFoodSize(saleTempId: number, foodSizeId: number) {}
+  selectedFoodSize(saleTempId: number, foodSizeId: number) {
+    try {
+      const payload = {
+        saleTempId: saleTempId,
+        foodSizeId: foodSizeId,
+      };
+
+      this.http
+        .post(config.apiServer + '/api/saleTemp/updateFoodSize', payload)
+        .subscribe((res: any) => {
+          this.fetchDataSaleTemp();
+          this.fetchDataSaleTempDetail();
+        });
+    } catch (e: any) {
+      Swal.fire({
+        title: 'error',
+        text: e.message,
+        icon: 'error',
+      });
+    }
+  }
 
   chooseFoodSize(item: any) {
     let foodTypeId: number = item.Food.foodTypeId;
@@ -67,7 +87,23 @@ export class SaleComponent {
       )
       .subscribe((res: any) => {
         this.saleTempDetail = res.results;
+        this.computeAmount();
       });
+  }
+
+  computeAmount() {
+    this.amount = 0;
+
+    for (let i = 0; i < this.saleTemps.length; i++) {
+      const item = this.saleTemps[i];
+      const totalPerRow = item.qty * item.price;
+
+      for (let j = 0; j < item.SaleTempDetails.length; j++) {
+        this.amount += item.SaleTempDetails[j].addedMoney;
+      }
+
+      this.amount += totalPerRow;
+    }
   }
 
   async removeItem(item: any) {
@@ -183,15 +219,7 @@ export class SaleComponent {
         .subscribe((res: any) => {
           this.saleTemps = res.results;
 
-          this.amount = 0;
-
-          for (let i = 0; i < this.saleTemps.length; i++) {
-            const item = this.saleTemps[i];
-            const qty = item.qty;
-            const price = item.price;
-
-            this.amount += qty * price;
-          }
+          this.computeAmount();
         });
     } catch (e: any) {
       Swal.fire({
