@@ -18,13 +18,35 @@ export class SaleComponent {
   foods: any = [];
   saleTemps: any = [];
   foodSizes: any = [];
+  tastes: any = [];
+  saleTempDetail: any = [];
   apiPath: string = '';
   tableNo: number = 1;
   userId: number = 0;
   amount: number = 0;
   saleTempId: number = 0;
   foodName: string = '';
-  saleTempDetail: any = [];
+  foodId: number = 0;
+
+  selectedTaste(saleTempId: number, tasteId: number) {
+    try {
+      const payload = {
+        saleTempId: saleTempId,
+        tasteId: tasteId
+      }
+
+      this.http.post(config.apiServer + '/api/saleTemp/updateTaste', payload)
+      .subscribe((res: any) => {
+        this.fetchDataSaleTempDetail();
+      })
+    } catch (e:any) {
+      Swal.fire({
+        title: 'error',
+        text: e.message,
+        icon: 'error'
+      })
+    }
+  }
 
   selectedFoodSize(saleTempId: number, foodSizeId: number) {
     try {
@@ -51,7 +73,10 @@ export class SaleComponent {
   chooseFoodSize(item: any) {
     let foodTypeId: number = item.Food.foodTypeId;
     this.saleTempId = item.id;
-    this.foodName = item.Food.name;
+    this.foodName = item.Food.name;  
+    this.foodId = item.Food.id;
+
+    this.fetchDataTaste(foodTypeId);
 
     try {
       this.http
@@ -259,6 +284,66 @@ export class SaleComponent {
         text: e.message,
         icon: 'error',
       });
+    }
+  }
+
+  fetchDataTaste(foodTypeId: number) {
+    try {
+      this.http.get(config.apiServer + '/api/taste/listByFoodTypeId/' + foodTypeId)
+      .subscribe((res: any) => {
+        this.tastes = res.results;
+      })
+    } catch (e:any) {
+      Swal.fire({
+        title: 'error',
+        text: e.message,
+        icon: 'error'
+      })
+    }
+  }
+
+  newSaleTempDetail() {
+    try {
+      const payload = {
+        saleTempId: this.saleTempId,
+        foodId: this.foodId
+      }
+
+      this.http.post(config.apiServer + '/api/saleTemp/newSaleTempDetail', payload)
+      .subscribe((res: any) => {
+        this.fetchDataSaleTempDetail();
+      })
+    } catch (e:any) {
+      Swal.fire({
+        title: 'error',
+        text: e.message,
+        icon: 'error'
+      })
+    }
+  }
+
+  async removeSaleTempDetail(id: number) {
+    try {
+      const button = await Swal.fire({
+        title: 'ยกเลิกรายการ',
+        text: 'คุณต้องการยกเลิกใช่หรือไม่',
+        icon: 'question',
+        showCancelButton: true,
+        showConfirmButton: true
+      })
+
+      if (button.isConfirmed) {
+        this.http.delete(config.apiServer + '/api/saleTemp/removeSaleTempDetail/' + id)
+        .subscribe((res: any) => {
+          this.fetchDataSaleTempDetail();
+        })
+      }
+    } catch (e: any) {
+      Swal.fire({
+        title: 'error',
+        text: e.message,
+        icon: 'error'
+      })
     }
   }
 }
