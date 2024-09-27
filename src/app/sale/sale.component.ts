@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
 import Swal from 'sweetalert2';
 import config from '../../config';
 import { FormsModule } from '@angular/forms';
@@ -27,6 +27,76 @@ export class SaleComponent {
   saleTempId: number = 0;
   foodName: string = '';
   foodId: number = 0;
+  payType: string = 'cash';
+  inputMoney: number = 0;
+  returnMoney: number = 0;
+
+  endSale() {
+    try {
+      const payload = {
+        userId: this.userId,
+        inputMoney: this.inputMoney,
+        amount: this.amount,
+        returnMoney: this.returnMoney,
+        payType: this.payType,
+        tableNo: this.tableNo
+      }
+
+      this.http.post(config.apiServer + '/api/saleTemp/endSale', payload)
+      .subscribe((res: any) => {
+        this.fetchDataSaleTemp();
+
+        document.getElementById('modalEndSale_btnClose')?.click();
+        this.clearForm();
+      })
+    } catch (e:any) {
+      Swal.fire({
+        title: 'error',
+        text: e.message,
+        icon: 'error'
+      })
+    }
+  }
+
+  clearForm() {
+    this.payType = 'cash';
+    this.inputMoney = 0;
+    this.returnMoney = 0;
+    this.amount = 0;  
+  }
+
+  getClassNameOfButton(inputMoney: number) {
+    let cssClass = 'btn btn-block btn-lg';
+
+    if (this.inputMoney == inputMoney) {
+      cssClass += ' btn-secondary';
+    } else {
+      cssClass += ' btn-outline-secondary';
+    }
+
+    return cssClass;
+  }
+
+  changeInputMoney(inputMoney: number) {
+    this.inputMoney = inputMoney;
+    this.returnMoney = this.inputMoney - this.amount;
+  }
+
+  selectedPayType(payType: string) {
+    this.payType = payType;
+  }
+
+  getClassName(payType: string) {
+    let cssClass = 'btn btn-block btn-lg';
+
+    if (this.payType == payType) {
+      cssClass += ' btn-secondary';
+    } else {
+      cssClass += ' btn-outline-secondary';
+    }
+
+    return cssClass;
+  }
 
   selectedTaste(saleTempId: number, tasteId: number) {
     try {
@@ -244,6 +314,15 @@ export class SaleComponent {
         .subscribe((res: any) => {
           this.saleTemps = res.results;
 
+          for (let i = 0; i < this.saleTemps.length; i++) {
+            const item = this.saleTemps[i];
+
+            if (item.SaleTempDetails.length > 0) {
+              item.qty = item.SaleTempDetails.length;
+              item.disabledQtyButton = true;
+            }
+          }
+
           this.computeAmount();
         });
     } catch (e: any) {
@@ -312,6 +391,7 @@ export class SaleComponent {
       this.http.post(config.apiServer + '/api/saleTemp/newSaleTempDetail', payload)
       .subscribe((res: any) => {
         this.fetchDataSaleTempDetail();
+        this.fetchDataSaleTemp();
       })
     } catch (e:any) {
       Swal.fire({
@@ -336,6 +416,7 @@ export class SaleComponent {
         this.http.delete(config.apiServer + '/api/saleTemp/removeSaleTempDetail/' + id)
         .subscribe((res: any) => {
           this.fetchDataSaleTempDetail();
+          this.fetchDataSaleTemp();
         })
       }
     } catch (e: any) {
