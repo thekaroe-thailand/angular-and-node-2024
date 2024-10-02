@@ -25,6 +25,7 @@ export class OrganizationComponent {
   website: string = '';
   promptPay: string = '';
   myFile: any;
+  logoPath: string = '';
 
   ngOnInit() {
     this.http.get(config.apiServer + '/api/organization/info')
@@ -38,6 +39,7 @@ export class OrganizationComponent {
       this.email = data.email;
       this.website = data.website;
       this.promptPay = data.promptPay;
+      this.logoPath = config.apiServer + '/uploads/' + this.logo;
     })
   }
 
@@ -76,14 +78,14 @@ export class OrganizationComponent {
   } 
 
   onFileChange(event: any) {
-    if (event.targt.files != null) {
+    if (event.target.files != null) {
       if (event.target.files.length > 0) {
         this.myFile = event.target.files[0];
       }
     }
   }
 
-  async upload() {
+  async upload() { 
     if (this.myFile !== undefined) {
       const formData = new FormData();
       formData.append('myFile', this.myFile);

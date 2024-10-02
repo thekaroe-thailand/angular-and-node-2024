@@ -4,6 +4,7 @@ import Swal from 'sweetalert2';
 import config from '../../config';
 import { FormsModule } from '@angular/forms';
 import { MyModalComponent } from '../my-modal/my-modal.component';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-sale',
@@ -30,6 +31,30 @@ export class SaleComponent {
   payType: string = 'cash';
   inputMoney: number = 0;
   returnMoney: number = 0;
+  billForPayUrl: string = '';
+
+  async printBillBeforePay() {
+    try {
+      const payload = {
+        userId: this.userId,
+        tableNo: this.tableNo
+      }
+
+      const url = config.apiServer + '/api/saleTemp/printBillBeforePay';
+      const res:any = await firstValueFrom(this.http.post(url, payload));
+      
+      setTimeout(() => {
+        this.billForPayUrl = config.apiServer + '/' + res.fileName;
+        document.getElementById('pdf-frame')?.setAttribute('src', this.billForPayUrl);
+      }, 500);
+    } catch (e:any) {
+      Swal.fire({
+        title: 'error',
+        text: e.message,
+        icon: 'error'
+      })
+    }
+  }
 
   endSale() {
     try {

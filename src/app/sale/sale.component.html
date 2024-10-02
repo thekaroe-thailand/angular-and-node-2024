@@ -19,6 +19,13 @@
             <i class="fa fa-times me-2"></i>ล้างรายการ
         </button>
 
+        @if (amount > 0) {
+            <button class="btn btn-outline-success me-2" (click)="printBillBeforePay()"
+                data-bs-target="#modalBillForPay" data-bs-toggle="modal">
+                <i class="fa fa-print me-2"></i>พิมพ์ใบเแจ้งยอด
+            </button>
+        }
+
         <div class="container-fluid">
             <div class="row">
                 <div class="col-9">
@@ -217,4 +224,9 @@
             </div>
         </div>
     </div>
+</app-my-modal>
+
+<app-my-modal modalId="modalBillForPay" title="ใบแจ้งรายการ">
+    <iframe id="pdf-frame" height="500px" style="width: 100%; transform: 3; transform-origin: 0.0;"
+        frameBorder="0"></iframe>
 </app-my-modal>
