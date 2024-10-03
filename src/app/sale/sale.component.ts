@@ -14,7 +14,7 @@ import { firstValueFrom } from 'rxjs';
   styleUrl: './sale.component.css',
 })
 export class SaleComponent {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   foods: any = [];
   saleTemps: any = [];
@@ -41,13 +41,36 @@ export class SaleComponent {
       }
 
       const url = config.apiServer + '/api/saleTemp/printBillBeforePay';
-      const res:any = await firstValueFrom(this.http.post(url, payload));
-      
+      const res: any = await firstValueFrom(this.http.post(url, payload));
+
       setTimeout(() => {
         this.billForPayUrl = config.apiServer + '/' + res.fileName;
         document.getElementById('pdf-frame')?.setAttribute('src', this.billForPayUrl);
       }, 500);
-    } catch (e:any) {
+    } catch (e: any) {
+      Swal.fire({
+        title: 'error',
+        text: e.message,
+        icon: 'error'
+      })
+    }
+  }
+
+  async printBillAfterPay() {
+    try {
+      const payload = {
+        userId: this.userId,
+        tableNo: this.tableNo
+      }
+
+      const url = config.apiServer + '/api/saleTemp/printBillAfterPay';
+      const res: any = await firstValueFrom(this.http.post(url, payload));
+
+      setTimeout(() => {
+        const iframe = document.getElementById('pdf-frame') as HTMLIFrameElement;
+        iframe.setAttribute('src', config.apiServer + '/' + res.fileName);
+      }, 500);
+    } catch (e: any) {
       Swal.fire({
         title: 'error',
         text: e.message,
@@ -68,13 +91,19 @@ export class SaleComponent {
       }
 
       this.http.post(config.apiServer + '/api/saleTemp/endSale', payload)
-      .subscribe((res: any) => {
-        this.fetchDataSaleTemp();
+        .subscribe((res: any) => {
+          this.fetchDataSaleTemp();
 
-        document.getElementById('modalEndSale_btnClose')?.click();
-        this.clearForm();
-      })
-    } catch (e:any) {
+          document.getElementById('modalEndSale_btnClose')?.click();
+          this.clearForm();
+
+          // click button print bill
+          const btnPrintBill = document.getElementById('btnPrintBill') as HTMLButtonElement;
+          btnPrintBill.click();
+
+          this.printBillAfterPay();
+        })
+    } catch (e: any) {
       Swal.fire({
         title: 'error',
         text: e.message,
@@ -87,7 +116,7 @@ export class SaleComponent {
     this.payType = 'cash';
     this.inputMoney = 0;
     this.returnMoney = 0;
-    this.amount = 0;  
+    this.amount = 0;
   }
 
   getClassNameOfButton(inputMoney: number) {
@@ -131,10 +160,10 @@ export class SaleComponent {
       }
 
       this.http.post(config.apiServer + '/api/saleTemp/updateTaste', payload)
-      .subscribe((res: any) => {
-        this.fetchDataSaleTempDetail();
-      })
-    } catch (e:any) {
+        .subscribe((res: any) => {
+          this.fetchDataSaleTempDetail();
+        })
+    } catch (e: any) {
       Swal.fire({
         title: 'error',
         text: e.message,
@@ -168,7 +197,7 @@ export class SaleComponent {
   chooseFoodSize(item: any) {
     let foodTypeId: number = item.Food.foodTypeId;
     this.saleTempId = item.id;
-    this.foodName = item.Food.name;  
+    this.foodName = item.Food.name;
     this.foodId = item.Food.id;
 
     this.fetchDataTaste(foodTypeId);
@@ -240,10 +269,10 @@ export class SaleComponent {
         this.http
           .delete(
             config.apiServer +
-              '/api/saleTemp/remove/' +
-              item.foodId +
-              '/' +
-              this.userId
+            '/api/saleTemp/remove/' +
+            item.foodId +
+            '/' +
+            this.userId
           )
           .subscribe((res: any) => {
             this.fetchDataSaleTemp();
@@ -394,10 +423,10 @@ export class SaleComponent {
   fetchDataTaste(foodTypeId: number) {
     try {
       this.http.get(config.apiServer + '/api/taste/listByFoodTypeId/' + foodTypeId)
-      .subscribe((res: any) => {
-        this.tastes = res.results;
-      })
-    } catch (e:any) {
+        .subscribe((res: any) => {
+          this.tastes = res.results;
+        })
+    } catch (e: any) {
       Swal.fire({
         title: 'error',
         text: e.message,
@@ -414,11 +443,11 @@ export class SaleComponent {
       }
 
       this.http.post(config.apiServer + '/api/saleTemp/newSaleTempDetail', payload)
-      .subscribe((res: any) => {
-        this.fetchDataSaleTempDetail();
-        this.fetchDataSaleTemp();
-      })
-    } catch (e:any) {
+        .subscribe((res: any) => {
+          this.fetchDataSaleTempDetail();
+          this.fetchDataSaleTemp();
+        })
+    } catch (e: any) {
       Swal.fire({
         title: 'error',
         text: e.message,
@@ -439,10 +468,10 @@ export class SaleComponent {
 
       if (button.isConfirmed) {
         this.http.delete(config.apiServer + '/api/saleTemp/removeSaleTempDetail/' + id)
-        .subscribe((res: any) => {
-          this.fetchDataSaleTempDetail();
-          this.fetchDataSaleTemp();
-        })
+          .subscribe((res: any) => {
+            this.fetchDataSaleTempDetail();
+            this.fetchDataSaleTemp();
+          })
       }
     } catch (e: any) {
       Swal.fire({

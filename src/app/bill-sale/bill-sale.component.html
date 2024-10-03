@@ -1,0 +1,55 @@
+<div class="card mt-3">
+    <div class="card-header">รายงานบิลขาย</div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-5">
+                <div class="input-group">
+                    <span class="input-group-text">จากวันที่</span>
+                    <input type="date" class="form-control" [(ngModel)]="startDate" />
+                </div>
+            </div>
+            <div class="col-5">
+                <div class="input-group">
+                    <span class="input-group-text">ถึงวันที่</span>
+                    <input type="date" class="form-control" [(ngModel)]="endDate" />
+                </div>
+            </div>
+            <div class="col-2">
+                <button class="btn btn-primary btn-block" (click)="fetchData()">
+                    <i class="fas fa-search me-1"></i>
+                    แสดงรายการ
+                </button>
+            </div>
+        </div>
+
+        <table class="table table-bordered table-striped mt-3">
+            <thead>
+                <tr>
+                    <th class="text-center" width="150px">วันที่</th>
+                    <th width="150px">รหัสบิล</th>
+                    <th width="200px">พนักงานขาย</th>
+                    <th class="text-end">โต้ะ</th>
+                    <th width="100px">การจ่าย</th>
+                    <th class="text-end">ราคาทั้งหมด</th>
+                    <th width="110px"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="text-center">
+                        <button class="btn btn-danger">
+                            <i class="fas fa-times me-1"></i>
+                            ยกเลิก
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
