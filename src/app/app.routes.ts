@@ -8,6 +8,8 @@ import { SaleComponent } from './sale/sale.component';
 import { OrganizationComponent } from './organization/organization.component';
 import { BillSaleComponent } from './bill-sale/bill-sale.component';
 import { ReportSumPerDayComponent } from './report-sum-per-day/report-sum-per-day.component';
+import { ReportSumPerMonthComponent } from './report-sum-per-month/report-sum-per-month.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 export const routes: Routes = [
   {
@@ -45,5 +47,13 @@ export const routes: Routes = [
   {
     path: 'report-sum-per-day',
     component: ReportSumPerDayComponent
+  },
+  {
+    path: 'report-sum-per-month',
+    component: ReportSumPerMonthComponent
+  },
+  {
+    path: 'dashboard',
+    component: DashboardComponent
   }
 ];
