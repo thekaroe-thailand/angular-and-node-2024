@@ -15,7 +15,7 @@
         <button class="btn btn-primary me-2" (click)="fetchData()">
             <i class="fa fa-check me-2"></i>ทั้งหมด
         </button>
-        <button class="btn btn-danger me-2" (click)="clearAllRow()">
+        <button [disabled]="saleTemps.length == 0" class="btn btn-danger me-2" (click)="clearAllRow()">
             <i class="fa fa-times me-2"></i>ล้างรายการ
         </button>
 
