@@ -35,20 +35,22 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td class="text-center">
-                        <button class="btn btn-danger">
-                            <i class="fas fa-times me-1"></i>
-                            ยกเลิก
-                        </button>
-                    </td>
-                </tr>
+                @for (item of billSales; track item.id) {
+                    <tr>
+                        <td>{{ item.createdAt }}</td>
+                        <td>{{ item.id }}</td>
+                        <td>{{ item.User.name }}</td>
+                        <td>{{ item.tableNo }}</td>
+                        <td>{{ item.payType }}</td>
+                        <td class="text-end">{{ item.amount }}</td>
+                        <td class="text-center">
+                            <button class="btn btn-danger">
+                                <i class="fas fa-times me-1"></i>
+                                ยกเลิก
+                            </button>
+                        </td>
+                    </tr>
+                }
             </tbody>
         </table>
     </div>

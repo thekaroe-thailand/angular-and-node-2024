@@ -15,6 +15,6 @@ export class AppComponent {
   token: string | undefined = '';
 
   ngOnInit() {
-    this.token = localStorage.getItem('angular_token')!;
+    this.token = localStorage.getItem('angular_token')! ?? '';
   }
 }
