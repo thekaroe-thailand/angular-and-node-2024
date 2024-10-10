@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import dayjs from 'dayjs';
 import config from '../../config';
 import { FormsModule } from '@angular/forms';
@@ -13,14 +13,14 @@ import Swal from 'sweetalert2';
   styleUrl: './report-sum-per-month.component.css'
 })
 export class ReportSumPerMonthComponent {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   ddlYear: number[] = [];
   year: number = dayjs().year();
   data: any[] = [];
 
   ngOnInit() {
-    this.ddlYear = Array.from({length: 10}, (_, i) => this.year - i);
+    this.ddlYear = Array.from({ length: 10 }, (_, i) => this.year - i);
     this.fetchData();
   }
 
@@ -30,10 +30,13 @@ export class ReportSumPerMonthComponent {
         year: this.year
       }
 
-      this.http.post(config.apiServer + '/api/report/sumPerMonthInYear', payload)
-      .subscribe((res: any) => {
-        this.data = res.results;
-      })
+      const token = localStorage.getItem('angular_token')!;
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+      this.http.post(config.apiServer + '/api/report/sumPerMonthInYear', payload, { headers: headers })
+        .subscribe((res: any) => {
+          this.data = res.results;
+        })
     } catch (e: any) {
       Swal.fire({
         title: 'error',

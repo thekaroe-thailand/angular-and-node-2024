@@ -48,19 +48,23 @@ export class UserComponent {
         username: this.username,
         password: this.password,
         level: this.level,
+        id: this.id,
       }
 
-      this.http.post(config.apiServer + '/api/user/create', payload)
-        .subscribe((res: any) => {
-          this.fetchData();
-          this.name = '';
-          this.username = '';
-          this.password = '';
-          this.level = 'employee';
-          this.id = 0;
+      if (this.id > 0) {
+        this.http.put(config.apiServer + '/api/user/update', payload)
+          .subscribe((res: any) => {
+            this.fetchData();
+            this.id = 0;
+          });
+      } else {
+        this.http.post(config.apiServer + '/api/user/create', payload)
+          .subscribe((res: any) => {
+            this.fetchData();
+          });
+      }
 
-          document.getElementById('modalUser_btnClose')?.click();
-        });
+      document.getElementById('modalUser_btnClose')?.click();
     } catch (e: any) {
       Swal.fire({
         icon: 'error',
@@ -92,6 +96,22 @@ export class UserComponent {
         text: e.message,
       });
     }
+  }
+
+  async edit(item: any) {
+    this.id = item.id;
+    this.name = item.name;
+    this.username = item.username;
+    this.password = item.password;
+    this.level = item.level;
+  }
+
+  clearForm() {
+    this.id = 0;
+    this.name = '';
+    this.username = '';
+    this.password = '';
+    this.level = 'employee';
   }
 
 }

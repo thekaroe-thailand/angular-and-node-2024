@@ -72,85 +72,90 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item">
-                    <a routerLink="/dashboard" class="nav-link">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
-                        <p>
-                            Dashboard
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a routerLink="/sale" class="nav-link">
-                        <i class="nav-icon fas fa-dollar"></i>
-                        <p>
-                            ขาย
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a routerLink="/foodType" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
-                        <p>
-                            ประเภทอาหาร
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a routerLink="/foodSize" class="nav-link">
-                        <i class="nav-icon fas fa-copy"></i>
-                        <p>
-                            ขนาด
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a routerLink="/taste" class="nav-link">
-                        <i class="nav-icon fas fa-tree"></i>
-                        <p>
-                            รสชาติ
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a routerLink="/food" class="nav-link">
-                        <i class="nav-icon fas fa-table"></i>
-                        <p>
-                            อาหาร/เครื่องดื่ม
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a routerLink="/user" class="nav-link">
-                        <i class="nav-icon fas fa-user"></i>
-                        <p>ผู้ใช้งานระบบ</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a routerLink="/organization" class="nav-link">
-                        <i class="nav-icon fas fa-home"></i>
-                        <p>ข้อมูลร้าน</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a routerLink="/bill-sale" class="nav-link">
-                        <i class="nav-icon fas fa-file-invoice"></i>
-                        <p>รายงานบิลขาย</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a routerLink="/report-sum-per-day" class="nav-link">
-                        <i class="nav-icon fas fa-chart-bar"></i>
-                        <p>สรุปยอดขายรายวัน</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a routerLink="/report-sum-per-month" class="nav-link">
-                        <i class="nav-icon fas fa-chart-pie"></i>
-                        <p>สรุปยอดขายรายเดือน</p>
-                    </a>
-                </li>
-
+                @if (level == 'admin') {
+                    <li class="nav-item">
+                        <a routerLink="/dashboard" class="nav-link">
+                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <p>
+                                Dashboard
+                            </p>
+                        </a>
+                    </li>
+                }
+                @if (level == 'admin' || level == 'employee') {
+                    <li class="nav-item">
+                        <a routerLink="/sale" class="nav-link">
+                            <i class="nav-icon fas fa-dollar"></i>
+                            <p>
+                                ขาย
+                            </p>
+                        </a>
+                    </li>
+                }
+                @if (level == 'admin') {
+                    <li class="nav-item">
+                        <a routerLink="/foodType" class="nav-link">
+                            <i class="nav-icon fas fa-th"></i>
+                            <p>
+                                ประเภทอาหาร
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a routerLink="/foodSize" class="nav-link">
+                            <i class="nav-icon fas fa-copy"></i>
+                            <p>
+                                ขนาด
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a routerLink="/taste" class="nav-link">
+                            <i class="nav-icon fas fa-tree"></i>
+                            <p>
+                                รสชาติ
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a routerLink="/food" class="nav-link">
+                            <i class="nav-icon fas fa-table"></i>
+                            <p>
+                                อาหาร/เครื่องดื่ม
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a routerLink="/user" class="nav-link">
+                            <i class="nav-icon fas fa-user"></i>
+                            <p>ผู้ใช้งานระบบ</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a routerLink="/organization" class="nav-link">
+                            <i class="nav-icon fas fa-home"></i>
+                            <p>ข้อมูลร้าน</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a routerLink="/bill-sale" class="nav-link">
+                            <i class="nav-icon fas fa-file-invoice"></i>
+                            <p>รายงานบิลขาย</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a routerLink="/report-sum-per-day" class="nav-link">
+                            <i class="nav-icon fas fa-chart-bar"></i>
+                            <p>สรุปยอดขายรายวัน</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a routerLink="/report-sum-per-month" class="nav-link">
+                            <i class="nav-icon fas fa-chart-pie"></i>
+                            <p>สรุปยอดขายรายเดือน</p>
+                        </a>
+                    </li>
+                }
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-chart-pie"></i>
