@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
+import config from '../../config';
 
 @Component({
   selector: 'app-sign-in',
@@ -15,7 +16,7 @@ export class SignInComponent {
   username: string = '';
   password: string = '';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   ngOnInit() {
     this.token = localStorage.getItem('angular_token')!;
@@ -36,7 +37,7 @@ export class SignInComponent {
 
       try {
         this.http
-          .post('http://localhost:3000/api/user/signin', payload)
+          .post(config.apiServer + '/api/user/signin', payload)
           .subscribe(
             (res: any) => {
               this.token = res.token;

@@ -1,0 +1,43 @@
+<div class="card mt-3">
+    <div class="card-header">รายการอาหาร/เครื่องดื่ม</div>
+    <div class="card-body">
+        <div>รายการทั้งหมด {{ total }} รายการ</div>
+        <table class="table table-bordered table-striped mt-2">
+            <thead>
+                <tr>
+                    <th>รายการ</th>
+                    <th class="text-end">ราคา</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (item of foods; track $index) {
+                    <tr>
+                        <td>{{ item.name }}</td>
+                        <td class="text-end">{{ item.price }}</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="d-flex justify-content-end mt-3">
+            <button [disabled]="page == 1" class="btn btn-primary me-2" (click)="changePage(1)">
+                <i class="fas fa-chevron-left"></i>
+                หน้าแรก
+            </button>
+            <button [disabled]="page == 1" class="btn btn-primary me-2" (click)="changePage(page - 1)">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            @for (i of totalPageArray; track i) {
+                <button [disabled]="page == i" class="btn btn-primary me-2" (click)="changePage(i)">
+                    {{ i }}
+                </button>
+            }
+            <button [disabled]="page == totalPage" class="btn btn-primary me-2" (click)="changePage(page + 1)">
+                <i class="fas fa-arrow-right"></i>
+            </button>
+            <button [disabled]="page == totalPage" class="btn btn-primary me-2" (click)="changePage(totalPage)">
+                หน้าสุดท้าย
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+</div>

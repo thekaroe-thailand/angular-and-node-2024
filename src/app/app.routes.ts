@@ -11,6 +11,7 @@ import { ReportSumPerDayComponent } from './report-sum-per-day/report-sum-per-da
 import { ReportSumPerMonthComponent } from './report-sum-per-month/report-sum-per-month.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { UserComponent } from './user/user.component';
+import { FoodPaginateComponent } from './food-paginate/food-paginate.component';
 
 export const routes: Routes = [
   {
@@ -60,5 +61,9 @@ export const routes: Routes = [
   {
     path: 'user',
     component: UserComponent
+  },
+  {
+    path: 'food-paginate',
+    component: FoodPaginateComponent
   }
 ];
